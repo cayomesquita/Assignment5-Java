@@ -2,20 +2,19 @@ package ca.ciccc;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TestALPriorityQueue {
+public class TestDLPriorityQueue {
 
-    ALPriorityQueue queue;
-    ALPriorityQueue queueAux;
+    VCPriorityQueue<Integer, String> queue;
+    VCPriorityQueue<Integer, String> queueAux;
 
     @Before
     public void setUp() throws Exception {
-        queue = new ALPriorityQueue();
-        queueAux = new ALPriorityQueue();
+        queue = new DLPriorityQueue();
+        queueAux = new DLPriorityQueue();
     }
 
     @After
@@ -105,7 +104,7 @@ public class TestALPriorityQueue {
         assertEquals(expected.key, result.key);
         assertEquals(expected.value, result.value);
 
-        queueAux.enqueue(3, "three");
+        queueAux.enqueue(5, "five");
         Entry<Integer, String> expected2 = queueAux.enqueue(0, "zero");
         queueAux.enqueue(2, "two");
         result = queueAux.peek();
@@ -119,7 +118,7 @@ public class TestALPriorityQueue {
         assertNotEquals(expected.value, result.value);
         assertEquals(expected2.key, result.key);
         assertEquals(expected2.value, result.value);
-        assertEquals(queue,queueMerged);
+        assertEquals(queue, queueMerged);
     }
 
 }
