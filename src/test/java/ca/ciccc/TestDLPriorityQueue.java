@@ -2,14 +2,15 @@ package ca.ciccc;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class TestDLPriorityQueue {
 
-    VCPriorityQueue<Integer, String> queue;
-    VCPriorityQueue<Integer, String> queueAux;
+    VCPriorityQueue queue;
+    VCPriorityQueue queueAux;
 
     @Before
     public void setUp() throws Exception {
@@ -25,7 +26,7 @@ public class TestDLPriorityQueue {
     public void enqueue() {
         Integer key = 1;
         String value = "one";
-        Entry<Integer, String> entry = queue.enqueue(key, value);
+        Entry entry = queue.enqueue(key, value);
         assertEquals(key, entry.key);
         assertEquals(value, entry.value);
     }
@@ -34,15 +35,24 @@ public class TestDLPriorityQueue {
     public void enqueueWithException() {
         Integer key = null;
         String value = "one";
-        Entry<Integer, String> entry = queue.enqueue(key, value);
+        Entry entry = queue.enqueue(key, value);
+        fail("Not throw IllegalArgumentException");
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void enqueueWithException2() {
+        String key = "one";
+        String value = "one";
+        Entry entry = queue.enqueue(key, value);
         fail("Not throw IllegalArgumentException");
     }
 
     @Test
     public void dequeueMin() {
         queue.enqueue(3, "three");
-        Entry<Integer, String> expected = queue.enqueue(1, "one");
-        Entry<Integer, String> expected2 = queue.enqueue(2, "two");
+        Entry expected = queue.enqueue(1, "one");
+        Entry expected2 = queue.enqueue(2, "two");
         Entry result = queue.dequeueMin();
         assertEquals(expected.key, result.key);
         assertEquals(expected.value, result.value);
@@ -55,7 +65,7 @@ public class TestDLPriorityQueue {
     @Test
     public void peek() {
         queue.enqueue(3, "three");
-        Entry<Integer, String> expected = queue.enqueue(1, "one");
+        Entry expected = queue.enqueue(1, "one");
         queue.enqueue(2, "two");
         Entry result = queue.peek();
         assertEquals(expected.key, result.key);
@@ -98,14 +108,14 @@ public class TestDLPriorityQueue {
     @Test
     public void merge() {
         queue.enqueue(3, "three");
-        Entry<Integer, String> expected = queue.enqueue(1, "one");
+        Entry expected = queue.enqueue(1, "one");
         queue.enqueue(2, "two");
         Entry result = queue.peek();
         assertEquals(expected.key, result.key);
         assertEquals(expected.value, result.value);
 
         queueAux.enqueue(5, "five");
-        Entry<Integer, String> expected2 = queueAux.enqueue(0, "zero");
+        Entry expected2 = queueAux.enqueue(0, "zero");
         queueAux.enqueue(2, "two");
         result = queueAux.peek();
         assertEquals(expected2.key, result.key);

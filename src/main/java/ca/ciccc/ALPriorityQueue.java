@@ -1,9 +1,8 @@
 package ca.ciccc;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
-public class ALPriorityQueue implements VCPriorityQueue<Integer, String> {
+public class ALPriorityQueue<K extends Comparable, V> implements VCPriorityQueue<K, V> {
 
     public static final Entry DEFAULT_PRIORITY_ENTRY = new Entry(Integer.MAX_VALUE, "");
     private ArrayList<Entry> arr = new ArrayList<>();
@@ -19,11 +18,18 @@ public class ALPriorityQueue implements VCPriorityQueue<Integer, String> {
     }
 
     @Override
-    public Entry<Integer, String> enqueue(Integer key, String value) throws IllegalArgumentException {
-        if (!(key instanceof Integer)) {
-            throw new IllegalArgumentException("key is not a valid Integer class");
+    public Entry<K, V> enqueue(K key, V value) throws IllegalArgumentException {
+        if (!(key instanceof Comparable)) {
+            throw new IllegalArgumentException("key is not valid");
         }
-        Entry<Integer, String> entry = new Entry<>(key, value);
+        //FIXME
+//        if (!arr.isEmpty()) {
+//            Comparable keyClass = arr.iterator().next().key;
+//            if (!(key instanceof keyClass.getClass())) {
+//                throw new IllegalArgumentException("key is not valid");
+//            }
+//        }
+        Entry<K,V> entry = new Entry<K,V>(key, value);
         return arr.add(entry) ? entry : null;
     }
 
@@ -44,7 +50,7 @@ public class ALPriorityQueue implements VCPriorityQueue<Integer, String> {
 
     @Override
     public VCPriorityQueue merge(VCPriorityQueue other) {
-        while (!other.isEmpty()){
+        while (!other.isEmpty()) {
             arr.add(other.dequeueMin());
         }
         return this;
