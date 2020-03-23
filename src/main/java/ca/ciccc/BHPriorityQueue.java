@@ -2,7 +2,7 @@ package ca.ciccc;
 
 import java.util.Arrays;
 
-public class BHPriorityQueue implements VCPriorityQueue {
+public class BHPriorityQueue<K extends Comparable, V> implements VCPriorityQueue<K, V> {
 
     public static final int DEFAULT_INITIAL_SIZE = 100;
     Entry[] heap;
@@ -30,11 +30,10 @@ public class BHPriorityQueue implements VCPriorityQueue {
     }
 
     @Override
-    public Entry enqueue(Comparable key, Object value) throws IllegalArgumentException {
-        if (!(key instanceof Comparable)) {
+    public Entry<K, V> enqueue(K key, V value) throws IllegalArgumentException {
+        if (!(key instanceof Comparable) || !acceptableType(key)) {
             throw new IllegalArgumentException("key is not valid");
         }
-        // FIXME check acceptable type.
         Entry newEntry = new Entry(key, value);
         heap[size] = newEntry;
         bubbleUp(size++);
@@ -93,7 +92,7 @@ public class BHPriorityQueue implements VCPriorityQueue {
     @Override
     public VCPriorityQueue merge(VCPriorityQueue other) {
         while (!other.isEmpty()) {
-            Entry newEntry = other.dequeueMin();
+            Entry<K, V> newEntry = other.dequeueMin();
             this.enqueue(newEntry.key, newEntry.value);
         }
         return this;
@@ -129,4 +128,11 @@ public class BHPriorityQueue implements VCPriorityQueue {
         heap = Arrays.copyOf(heap, heap.length * 2);
     }
 
+    private boolean acceptableType(K key) {
+        if (size > 0) {
+            Class<? extends Comparable> keyClass = heap[0].key.getClass();
+            return key.getClass().isAssignableFrom(keyClass);
+        }
+        return true;
+    }
 }

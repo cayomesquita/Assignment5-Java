@@ -39,12 +39,13 @@ public class TestDLPriorityQueue {
         fail("Not throw IllegalArgumentException");
     }
 
-    @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void enqueueWithException2() {
         String key = "one";
         String value = "one";
-        Entry entry = queue.enqueue(key, value);
+        assertNotNull(queue.enqueue(1, value));
+        assertNotNull(queue.enqueue(2, value));
+        queue.enqueue(key, value);
         fail("Not throw IllegalArgumentException");
     }
 

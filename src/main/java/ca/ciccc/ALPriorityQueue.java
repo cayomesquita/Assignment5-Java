@@ -19,16 +19,9 @@ public class ALPriorityQueue<K extends Comparable, V> implements VCPriorityQueue
 
     @Override
     public Entry<K, V> enqueue(K key, V value) throws IllegalArgumentException {
-        if (!(key instanceof Comparable)) {
+        if (!(key instanceof Comparable) || !acceptableType(key)) {
             throw new IllegalArgumentException("key is not valid");
         }
-        //FIXME
-//        if (!arr.isEmpty()) {
-//            Comparable keyClass = arr.iterator().next().key;
-//            if (!(key instanceof keyClass.getClass())) {
-//                throw new IllegalArgumentException("key is not valid");
-//            }
-//        }
         Entry<K,V> entry = new Entry<K,V>(key, value);
         return arr.add(entry) ? entry : null;
     }
@@ -54,5 +47,13 @@ public class ALPriorityQueue<K extends Comparable, V> implements VCPriorityQueue
             arr.add(other.dequeueMin());
         }
         return this;
+    }
+
+    private boolean acceptableType(K key) {
+        if (!arr.isEmpty()) {
+            Class<? extends Comparable> keyClass = arr.iterator().next().key.getClass();
+            return key.getClass().isAssignableFrom(keyClass);
+        }
+        return true;
     }
 }
